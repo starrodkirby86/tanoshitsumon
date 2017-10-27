@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Header, Icon, Button, Grid } from 'semantic-ui-react';
 import CenteredComponent from '../../modules/CenteredComponent';
 import { grantAccessTokenWithClientCredentials } from '../../lib/api/auth/actions/thunks';
-import { thunkGetGenreList } from '../../lib/api/series/actions/thunks';
+import { genreList } from '../../lib/api/series/actions/thunks';
 
 const mapStateToProps = (state) => {
   const { auth, series } = state;
@@ -17,11 +17,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   onButtonClick: () => dispatch(grantAccessTokenWithClientCredentials()),
-  onGenreClick: () => dispatch(thunkGetGenreList()),
+  onGenreClick: () => dispatch(genreList()),
 });
 
 const Title = (props) => {
-  const { token, genres, onButtonClick, onGenreClick } = props;
+  const {
+    token, genres, onButtonClick, onGenreClick,
+  } = props;
   const message = token ? token.accessToken : 'Can we get you your access token?';
   return (
     <Grid centered verticalAlign="middle">

@@ -50,13 +50,12 @@ export function browseSeries(params) {
   */
 
   const url = new URL('/browse/anime', API_URL);
-  return axios.get(
-    url,
-    qs.stringify({
-      ...browseParams,
-      access_token: accessToken,
-    }),
-  ).then(response => response);
+  const query = qs.stringify({
+    ...browseParams,
+    access_token: accessToken,
+  });
+  const requestUrl = url.set('query', query).href;
+  return axios.get(requestUrl).then(response => response);
 }
 
 export function getGenreList(params) {
