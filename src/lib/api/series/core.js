@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'querystring';
 import URL from 'url-parse';
-import API_URL from './common';
+import API_URL from '../core/common';
 
 export const MEDIA_TYPES = {
   TV: 0,
@@ -23,17 +23,14 @@ export const API_URL_ANIME = URL('./anime/', API_URL);
 export const API_URL_MANGA = URL('./manga/', API_URL);
 
 export function get(url, accessToken) {
-  return axios.get(
-    url,
-    qs.stringify({
-      access_token: accessToken,
-    }),
-  ).then(response => response);
+  const query = qs.stringify({ access_token: accessToken });
+  const requestUrl = url.set('query', query).href;
+  return axios.get(requestUrl).then(response => response);
 }
 
 export function getSeries(params, route) {
   const { id, accessToken } = params;
-  const url = new URL(route ? `./${id}/${route}` : `./${id}`, API_URL_ANIME).href;
+  const url = new URL(route ? `./${id}/${route}` : `./${id}`, API_URL_ANIME);
   return get(url, accessToken);
 }
 
@@ -52,7 +49,7 @@ export function browseSeries(params) {
     sort, airing_data, full_page, page } = params;
   */
 
-  const url = new URL('/browse/anime', API_URL).href;
+  const url = new URL('/browse/anime', API_URL);
   return axios.get(
     url,
     qs.stringify({
@@ -64,6 +61,6 @@ export function browseSeries(params) {
 
 export function getGenreList(params) {
   const { accessToken } = params;
-  const url = new URL('./genre_list', API_URL).href;
+  const url = new URL('./genre_list', API_URL);
   return get(url, accessToken);
 }

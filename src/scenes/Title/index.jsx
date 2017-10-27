@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Header, Icon, Button, Grid } from 'semantic-ui-react';
 import CenteredComponent from '../../modules/CenteredComponent';
-import { grantAccessTokenWithClientCredentials } from '../../lib/api/actions/index';
+import { grantAccessTokenWithClientCredentials } from '../../lib/api/auth/actions/thunks';
+import { thunkGetGenreList } from '../../lib/api/series/actions/thunks';
 
 const mapStateToProps = (state) => {
-  const { auth } = state;
-  const { token } = auth || { };
+  const { auth, series } = state;
+  const { token } = auth || {};
+  const { genres } = series || [];
   return {
     token,
   };
@@ -15,10 +17,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   onButtonClick: () => dispatch(grantAccessTokenWithClientCredentials()),
+  onGenreClick: () => dispatch(thunkGetGenreList()),
 });
 
 const Title = (props) => {
-  const { token, onButtonClick } = props;
+  const { token, genres, onButtonClick, onGenreClick } = props;
   const message = token ? token.accessToken : 'Can we get you your access token?';
   return (
     <Grid centered verticalAlign="middle">
@@ -33,6 +36,10 @@ const Title = (props) => {
       </Grid.Row>
       <Grid.Row>
         <Button icon="hand peace" labelPosition="left" content="Get token!" onClick={onButtonClick} />
+        <Button icon="film" labelPosition="left" content="Get genres!" onClick={onGenreClick} />
+      </Grid.Row>
+      <Grid.Row>
+        {genres}
       </Grid.Row>
     </Grid>
   );
@@ -40,7 +47,9 @@ const Title = (props) => {
 
 Title.propTypes = {
   token: PropTypes.object,
+  genres: PropTypes.array,
   onButtonClick: PropTypes.func,
+  onGenreClick: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Title);

@@ -1,4 +1,4 @@
-import { grantClientCredentials } from './core/auth';
+import { grantClientCredentials } from './auth/core';
 import { CLIENT_ID, CLIENT_SECRET } from '../../res/api/secret';
 
 export function getAccessTokenWithClientCredentials() {

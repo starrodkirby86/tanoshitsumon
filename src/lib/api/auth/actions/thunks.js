@@ -1,24 +1,20 @@
-import { API_AUTH_GRANT_ACCESS_TOKEN } from './types';
-import { getAccessTokenWithClientCredentials } from '../anilist';
-
-export function grantAccessToken(token) {
-  return {
-    type: API_AUTH_GRANT_ACCESS_TOKEN,
-    token,
-  };
-}
+import { getAccessTokenWithClientCredentials } from '../../anilist';
+import { grantAccessToken, setExpiryTime } from './actionCreators';
 
 export function grantAccessTokenWithClientCredentials() {
   return (dispatch) => {
     getAccessTokenWithClientCredentials()
       .then((response) => {
         const { data } = response;
-        return dispatch(grantAccessToken({
+        const token = {
           accessToken: data.access_token,
           tokenType: data.token_type,
           expires: data.expires,
           expiresIn: data.expires_in,
-        }));
+        };
+        dispatch(grantAccessToken(token));
+        return dispatch(setExpiryTime(data.expires * 100));
       });
   };
 }
+

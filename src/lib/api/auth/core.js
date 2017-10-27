@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'querystring';
 import URL from 'url-parse';
-import API_URL from './common';
+import API_URL from '../core/common';
 
 export const API_URL_AUTH = new URL('./auth/', API_URL);
 
