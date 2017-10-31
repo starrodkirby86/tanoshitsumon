@@ -3,12 +3,14 @@ import {
   getGenreList, browseSeries, getSeriesModel,
   getSeriesPage, getSeriesCharacters, getSeriesStaff, getSeriesActors,
 } from '../core';
+import { verifyAccessTokenOrLoad } from '../../auth/actions/thunks';
 
 // TODO: Thunks are being as used as the endpoint called from home. Is this /good/?
 
 export function genreList() {
   return (dispatch, getState) => {
-    const { auth: { token: { accessToken } } } = getState();
+    dispatch(verifyAccessTokenOrLoad());
+    const { auth: { token: { accessToken } } = { token: {} } } = getState();
     getGenreList({ accessToken })
       .then((response) => {
         const { data } = response;
@@ -19,7 +21,8 @@ export function genreList() {
 
 export function browse(browseParams) {
   return (dispatch, getState) => {
-    const { auth: { token: { accessToken } } } = getState();
+    dispatch(verifyAccessTokenOrLoad());
+    const { auth: { token: { accessToken } } = { token: {} } } = getState();
     browseSeries({
       browseParams,
       accessToken,
@@ -32,7 +35,8 @@ export function browse(browseParams) {
 
 export function seriesDetail(id, getSeriesFunc, getSeriesActionCreator) {
   return (dispatch, getState) => {
-    const { auth: { token: { accessToken } } } = getState();
+    dispatch(verifyAccessTokenOrLoad());
+    const { auth: { token: { accessToken } } = { token: {} } } = getState();
     getSeriesFunc({
       id,
       accessToken,

@@ -18,3 +18,13 @@ export function grantAccessTokenWithClientCredentials() {
   };
 }
 
+export function verifyAccessTokenOrLoad() {
+  return (dispatch, getState) => {
+    const { auth = { token: {} } } = getState();
+    console.log(auth);
+    const { auth: { token: { accessToken } } = { token: {} } } = getState();
+    if (!accessToken) {
+      dispatch(grantAccessTokenWithClientCredentials());
+    }
+  };
+}
