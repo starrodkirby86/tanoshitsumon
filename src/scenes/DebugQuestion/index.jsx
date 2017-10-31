@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Grid, Divider, Button } from 'semantic-ui-react';
@@ -6,6 +7,7 @@ import CenteredComponent from '../../modules/CenteredComponent';
 import DebugForm from './components/DebugForm';
 import Question from '../../modules/Question/index';
 import { browse } from '../../lib/api/series/actions/thunks';
+import { grantAccessTokenWithClientCredentials } from '../../lib/api/auth/actions/thunks';
 
 const style = {
   margin: 'auto',
@@ -18,18 +20,32 @@ const style = {
 };
 
 const mapStateToProps = (state) => {
-  const { auth: { token: { accessToken } } } = state;
+  const {
+    auth: { token: { accessToken } },
+    series: { series },
+  } = state;
   return {
     accessToken,
+    series,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  onGetSeriesClick: () => dispatch(browse()),
+  onGrantAccessTokenClick: () => dispatch(grantAccessTokenWithClientCredentials()),
+  onGetSeriesClick: () => dispatch(browse({
+    sort: 'popularity-desc',
+  })),
+  onGenerateQuestionsClick: () => dispatch(),
 });
 
 const DebugQuestion = (props) => {
-  const { accessToken, onGetSeriesClick } = props;
+  const {
+    accessToken,
+    series,
+    onGetSeriesClick,
+    onGrantAccessTokenClick,
+    onGenerateQuestionsClick,
+  } = props;
   return (
     <Grid style={style} textAlign="center" verticalAlign="middle">
       <Grid.Row style={{ maxWidth: 1920 }}>
@@ -42,15 +58,19 @@ const DebugQuestion = (props) => {
           </Segment>
           <Segment attached="bottom" style={{ color: 'black' }}>
             <span>{accessToken}</span>
-            <Button fluid color="blue" onClick={onGetSeriesClick}>
+            <Button fluid color="teal" onClick={onGrantAccessTokenClick}>
+              Grant Access Token
+            </Button>
+            <Divider />
+            <Button disabled={_.isNull(accessToken)} fluid color="blue" onClick={onGetSeriesClick}>
               Get Series
             </Button>
             <Divider />
-            <Button fluid color="green">
+            <Button disabled={_.isNull(series)} fluid color="green" onClick={onGenerateQuestionsClick}>
               Generate a new question
             </Button>
             <Divider />
-            <DebugForm />
+            <DebugForm disabled={_.isNull(series)} />
           </Segment>
         </Grid.Column>
       </Grid.Row>
@@ -60,7 +80,10 @@ const DebugQuestion = (props) => {
 
 DebugQuestion.propTypes = {
   accessToken: PropTypes.string,
+  series: PropTypes.object,
+  onGrantAccessTokenClick: PropTypes.func,
   onGetSeriesClick: PropTypes.func,
+  onGenerateQuestionsClick: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DebugQuestion);

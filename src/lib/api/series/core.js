@@ -49,7 +49,7 @@ export function browseSeries(params) {
     sort, airing_data, full_page, page } = params;
   */
 
-  const url = new URL('/browse/anime', API_URL);
+  const url = new URL('./browse/anime', API_URL);
   const query = qs.stringify({
     ...browseParams,
     access_token: accessToken,

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form, Dropdown } from 'semantic-ui-react';
 
 const choices = [
@@ -25,21 +26,29 @@ const choices = [
 ];
 
 class DebugForm extends React.Component {
+
+  propTypes = {
+    disabled: PropTypes.bool,
+  };
+
   state = {};
 
   handleChange = (e, { value }) => this.setState({ value });
 
   render() {
     const { value } = this.state;
+    const { disabled } = this.props;
     return (
       <Form>
-        <Form.Group inline>
-          <label>Difficulty</label>
-          <Form.Radio label="Easy" value="easy" checked={value === 'easy'} onChange={this.handleChange} />
-          <Form.Radio label="Medium" value="medium" checked={value === 'medium'} onChange={this.handleChange} />
-          <Form.Radio label="Hard" value="hard" checked={value === 'hard'} onChange={this.handleChange} />
-        </Form.Group>
-        <Dropdown placeholder="Select Question Type..." fluid selection options={choices} />
+        <Form.Field disabled={disabled}>
+          <Form.Group inline>
+            <label>Difficulty</label>
+            <Form.Radio label="Easy" value="easy" checked={value === 'easy'} onChange={this.handleChange} />
+            <Form.Radio label="Medium" value="medium" checked={value === 'medium'} onChange={this.handleChange} />
+            <Form.Radio label="Hard" value="hard" checked={value === 'hard'} onChange={this.handleChange} />
+          </Form.Group>
+        </Form.Field>
+        <Dropdown disabled={disabled} placeholder="Select Question Type..." fluid selection options={choices} />
       </Form>
     );
   }

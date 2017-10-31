@@ -4,6 +4,9 @@ const initialState = {
       accessToken: null,
     },
   },
+  series: {
+    series: null,
+  },
 };
 
 export default initialState;
