@@ -13,6 +13,7 @@ This project relies on the API v1 of the anime management website, [Anilist](htt
 Otherwise, the startup and build process are all identical to Create React App. This includes starting the application with ``npm start``, or creating a minified version with ``npm build``.
 
 ## Todo List
+- Create a ranking question/component, and then actions generating said question.
 - Question generation. Successfully test that, with a series being grabbed/browsed, we can then create an appropriate question that React will take in.
 - Actions requiring the usage of an access token need to rely on calling these actions first, *then* call the actual action.
 - *Low priority*: Centered component formatting is imperfect. But that's outside the main needs of the project.

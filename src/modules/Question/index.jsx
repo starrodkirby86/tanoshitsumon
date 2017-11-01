@@ -16,8 +16,6 @@ const sampleAnswers = [
 ];
 
 const Question = (props) => {
-  // const {} = props;
-  console.log(getAccessTokenWithClientCredentials());
   return (
     <Grid
       textAlign="center"
